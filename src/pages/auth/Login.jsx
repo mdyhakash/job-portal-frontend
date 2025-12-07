@@ -14,8 +14,12 @@ import { RadioGroupItem, RadioGroup } from "@/components/ui/radio-group";
 import axios from "axios";
 import { toast } from "sonner";
 import { USER_API_END_POINT } from "@/utils/constant";
+import { useAuthStore } from "@/store/authStore";
+import { Loader2 } from "lucide-react";
 
 const Login = () => {
+  const login = useAuthStore((state) => state.login);
+  const loading = useAuthStore((state) => state.loading);
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -26,26 +30,40 @@ const Login = () => {
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
+  //without zustand
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  //   // console.log(input);
+  //   try {
+  //     const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       withCredentials: true,
+  //     });
+  //     if (res.data.success) {
+  //       navigate("/");
+  //       toast.success(res.data.message);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
+  //with zustand
   const submitHandler = async (e) => {
     e.preventDefault();
-    // console.log(input);
     try {
-      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-      if (res.data.success) {
+      const data = await login(input);
+      if (data && data.success) {
         navigate("/");
-        toast.success(res.data.message);
+        toast.success(data.message);
       }
     } catch (err) {
+      toast.error("Login failed");
       console.log(err);
     }
   };
-
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 px-4">
       <Card className="w-full max-w-sm mx-auto border border-slate-200 shadow-lg rounded-2xl">
@@ -140,9 +158,18 @@ const Login = () => {
             {/* SUBMIT BUTTON */}
             <Button
               type="submit"
+              disabled={loading}
               className="w-full bg-emerald-600 text-white hover:bg-emerald-700"
             >
-              Login
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin">
+                    Logging in...
+                  </Loader2>
+                </div>
+              ) : (
+                "Login"
+              )}
             </Button>
           </form>
         </CardContent>

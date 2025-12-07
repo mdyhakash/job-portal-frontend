@@ -14,7 +14,11 @@ import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import { toast } from "sonner";
 import { USER_API_END_POINT } from "@/utils/constant";
+import { useAuthStore } from "@/store/authStore";
 const Register = () => {
+  const register = useAuthStore((state) => state.register);
+  const loading = useAuthStore((state) => state.loading);
+
   const [input, setInput] = useState({
     name: "",
     email: "",
@@ -33,43 +37,59 @@ const Register = () => {
   const changeFileHandler = (e) => {
     setInput({ ...input, file: e.target.files?.[0] });
   };
+  //without zustand
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  //   console.log(input);
+  //   const formData = new FormData();
+  //   formData.append("name", input.name);
+  //   formData.append("email", input.email);
+  //   formData.append("phoneNumber", input.phoneNumber);
+  //   formData.append("password", input.password);
+  //   if (!input.role) {
+  //     toast.error("Please select a role");
+  //     return;
+  //   }
+  //   formData.append("role", input.role);
 
+  //   if (input.file) {
+  //     formData.append("file", input.file);
+  //   }
+
+  //   try {
+  //     const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //       withCredentials: true,
+  //     });
+
+  //     if (res.data.success) {
+  //       toast.success(res.data.message);
+  //       navigate("/auth/login");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     toast.error("Registration failed");
+  //   }
+  // };
+  //with zustand
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
-    const formData = new FormData();
-    formData.append("name", input.name);
-    formData.append("email", input.email);
-    formData.append("phoneNumber", input.phoneNumber);
-    formData.append("password", input.password);
     if (!input.role) {
       toast.error("Please select a role");
       return;
     }
-    formData.append("role", input.role);
-
-    if (input.file) {
-      formData.append("file", input.file);
-    }
-
     try {
-      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true,
-      });
-
-      if (res.data.success) {
-        toast.success(res.data.message);
+      const data = await register(input);
+      if (data && data.success) {
+        toast.success(data.message);
         navigate("/auth/login");
       }
     } catch (err) {
-      console.log(err);
       toast.error("Registration failed");
     }
   };
-
   return (
     <form
       onSubmit={submitHandler}
@@ -182,9 +202,18 @@ const Register = () => {
         <CardFooter className="flex flex-col gap-2 bg-white">
           <Button
             type="submit"
+            disabled={loading}
             className="w-full bg-emerald-600 text-white hover:bg-emerald-700"
           >
-            Register
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin">
+                  Registering...
+                </Loader2>
+              </div>
+            ) : (
+              "Register"
+            )}
           </Button>
 
           <div className="flex justify-center text-sm">

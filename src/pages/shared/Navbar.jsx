@@ -5,10 +5,10 @@ import { Popover, PopoverTrigger } from "@radix-ui/react-popover";
 import { LogOut, User2 } from "lucide-react";
 import React from "react";
 import { Link, NavLink } from "react-router";
-
+import { useAuthStore } from "@/store/authStore";
 const Navbar = () => {
-  const user = false;
-
+  // const user = false;
+  const user = useAuthStore((state) => state.user);
   return (
     <div className="bg-slate-100 border-b border-slate-200 shadow-sm">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16 px-4">
@@ -94,11 +94,9 @@ const Navbar = () => {
                     </Avatar>
                     <div>
                       <h4 className="font-semibold text-slate-900">
-                        Md Yasin Hossain Akash
+                        {user.name}
                       </h4>
-                      <p className="text-sm text-slate-500">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing.
-                      </p>
+                      <p className="text-sm text-slate-500">{user.email}</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-3 text-slate-700">

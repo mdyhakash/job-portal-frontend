@@ -5,7 +5,7 @@ export const useCategories = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const res = await api.get("/job/getCategories");
+      const res = await api.get("/job-categories/getCategories");
       return res.data.categories;
     },
   });

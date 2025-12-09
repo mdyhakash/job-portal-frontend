@@ -5,6 +5,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Job from "@/pages/jobs/Job";
+import JobDetails from "@/pages/jobs/JobDetails";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "jobs",
         Component: Job,
+      },
+      {
+        path: "/description/:id",
+        Component: JobDetails,
       },
     ],
   },

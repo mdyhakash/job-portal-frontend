@@ -1,8 +1,10 @@
 import LatestJobCard from "@/components/ui/components/LatestJobCard";
+import { useJobs } from "@/hooks/useJob";
 import React from "react";
 
 const LatestJob = () => {
-  const allJobs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const alljobs = useJobs();
+  const allJobs = alljobs.data || [];
   return (
     <div className="max-w-7xl mx-auto my-20">
       <h1 className="text-4xl font-bold te text-emerald-700">Latest Jobs </h1>

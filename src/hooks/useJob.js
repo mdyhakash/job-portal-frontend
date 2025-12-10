@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/utils/axios";
-import { useSingleJobStore } from "@/store/jobStore";
-
+import { useJobStore } from "@/store/jobStore";
 
 export const useJobs = () => {
   return useQuery({
@@ -14,7 +13,7 @@ export const useJobs = () => {
 };
 
 export const useSingleJob = (jobId) => {
-  const setSingleJob = useSingleJobStore((state) => state.setSingleJob);
+  const setSingleJob = useJobStore((state) => state.setSingleJob);
   return useQuery({
     queryKey: ["job", jobId],
     queryFn: async () => {
@@ -24,5 +23,15 @@ export const useSingleJob = (jobId) => {
     onSuccess: (data) => {
       setSingleJob(data);
     }, // Only run the query if jobId is provided
+  });
+};
+
+export const useCategories = () => {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const res = await api.get("/job-categories/getCategories");
+      return res.data.categories;
+    },
   });
 };

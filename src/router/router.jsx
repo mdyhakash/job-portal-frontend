@@ -6,6 +6,7 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Job from "@/pages/jobs/Job";
 import JobDetails from "@/pages/jobs/JobDetails";
+import Browse from "@/pages/browse/Browse";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "/description/:id",
         Component: JobDetails,
+      },
+      {
+        path: "/browse",
+        Component: Browse,
       },
     ],
   },

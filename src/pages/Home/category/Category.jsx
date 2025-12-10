@@ -1,5 +1,4 @@
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -8,8 +7,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { useCategories } from "@/hooks/useCategory";
-import { useCategoryStore } from "@/store/categoryStore";
+import { useCategories } from "@/hooks/useJob";
+import useJobStore from "@/store/jobStore";
 
 // const categories = [
 //   "Frontend Developer",
@@ -25,7 +24,7 @@ import { useCategoryStore } from "@/store/categoryStore";
 // ];
 
 const Category = () => {
-  const { selectedCategory, setSelectedCategory } = useCategoryStore();
+  const { selectedCategory, setSelectedCategory } = useJobStore();
   const { data: categories, isLoading, isError } = useCategories();
   if (isLoading) {
     return <div>Loading...</div>;

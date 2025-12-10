@@ -15,7 +15,7 @@ const JobDetails = () => {
   if (isError) {
     return <div>Error loading job details.</div>;
   }
-  const isApplied = false;
+  const isApplied = true;
   return (
     <div className="max-w-5xl mx-auto my-10 space-y-6">
       {/* Job Overview */}

@@ -13,16 +13,9 @@ import { Bookmark } from "lucide-react";
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router";
-
+import { daysAgo } from "@/utils/createdAt";
 const JobCard = ({ job }) => {
   const navigate = useNavigate();
-  const daysAgo = () => {
-    const createdAt = new Date(job?.createdAt);
-    const currentDate = new Date();
-    const timeDiff = currentDate - createdAt;
-    const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-    return daysAgo === 0 ? "Today" : `${daysAgo} days ago`;
-  };
 
   return (
     <div className="">
